@@ -1,0 +1,33 @@
+name: Lapor bug / Report a bug
+description: Ada yang gak jalan di Ongol? / Something not working?
+title: "[Bug] "
+labels: ["bug"]
+body:
+  - type: textarea
+    id: apa
+    attributes:
+      label: Apa yang terjadi? / What happened?
+      description: Ceritain langkah-langkahnya sampai bug muncul. / Steps to reproduce.
+    validations:
+      required: true
+  - type: textarea
+    id: harapan
+    attributes:
+      label: Harusnya gimana? / What did you expect?
+  - type: input
+    id: versi-ongol
+    attributes:
+      label: Versi Ongol / Ongol version
+      placeholder: "1.4.0"
+  - type: dropdown
+    id: windows
+    attributes:
+      label: Windows
+      options: ["Windows 11", "Windows 10"]
+    validations:
+      required: true
+  - type: textarea
+    id: screenshot
+    attributes:
+      label: Screenshot (opsional / optional)
+      description: Seret gambar ke sini. / Drag images here.

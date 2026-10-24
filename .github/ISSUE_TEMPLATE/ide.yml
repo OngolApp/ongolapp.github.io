@@ -1,0 +1,15 @@
+name: Usul fitur / Suggest a feature
+description: Pengen Ongol bisa apa lagi? / What else should Ongol do?
+title: "[Ide] "
+labels: ["enhancement"]
+body:
+  - type: textarea
+    id: ide
+    attributes:
+      label: Idenya apa? / What's the idea?
+    validations:
+      required: true
+  - type: textarea
+    id: kenapa
+    attributes:
+      label: Kenapa berguna? / Why would it help?

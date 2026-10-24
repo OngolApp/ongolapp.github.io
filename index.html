@@ -201,6 +201,25 @@ body.arcade .seg button[data-theme="arcade"][aria-pressed="true"] { color: var(-
 .tip .go { color: var(--pink); }
 .tip.soon { opacity: .5; cursor: default; }
 
+.tip.qris { cursor: pointer; width: 100%; border: 1px solid var(--line); color: var(--text); font: inherit; text-align: left; }
+.tip:not(.soon):hover { background: rgba(255,255,255,.06); }
+.sup-note { margin-top: 18px; font-size: 13.5px; color: var(--dim); }
+.feedback { padding: 0 0 90px; }
+.feedback .lede { margin-top: 16px; }
+.fb-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px; margin-top: 36px; }
+.fb { padding: 24px; display: flex; flex-direction: column; gap: 10px; text-decoration: none; transition: background .2s, transform .15s; }
+a.fb:hover { background: var(--glass-hi); transform: translateY(-2px); }
+.fb svg { width: 26px; height: 26px; color: var(--cyan); }
+.fb b { font-size: 18px; }
+.fb p { color: var(--soft); font-size: 15px; }
+.fb .more { margin-top: auto; padding-top: 6px; font-weight: 700; font-size: 14px; color: var(--cyan); }
+.fb.soon { opacity: .55; }
+.fb-tip { margin-top: 18px; font-size: 14px; color: var(--dim); text-align: center; }
+.qr-modal { position: fixed; inset: 0; z-index: 100; display: grid; place-items: center; padding: 16px; background: rgba(3, 5, 15, .75); backdrop-filter: blur(6px); }
+.qr-modal[hidden] { display: none; }
+.qr-box { width: min(380px, 100%); padding: 24px; border-radius: 24px; background: var(--night-2); border: 1px solid var(--line); text-align: center; display: grid; gap: 14px; }
+.qr-box img { width: 100%; border-radius: 14px; background: #fff; padding: 10px; }
+.qr-box p { color: var(--soft); font-size: 14px; }
 .faq { padding: 40px 0 90px; }
 .faq-list { max-width: 820px; margin: 36px auto 0; }
 .faq details { border-bottom: 1px solid var(--line); padding: 18px 4px; }
@@ -225,7 +244,7 @@ body.arcade .tab[aria-pressed="true"] { background: var(--yellow); }
 @media (max-width: 980px) {
   .nav-links { display: none; }
   .fact-row { grid-template-columns: repeat(3, 1fr); }
-  .day-grid, .buddy-grid, .light-grid, .get-grid, .support-card { grid-template-columns: 1fr; }
+  .day-grid, .buddy-grid, .light-grid, .get-grid, .support-card, .fb-grid { grid-template-columns: 1fr; }
   .all-grid { grid-template-columns: repeat(2, 1fr); }
 }
 @media (max-width: 560px) {
@@ -253,6 +272,7 @@ body.arcade .tab[aria-pressed="true"] { background: var(--yellow); }
       <a href="#fitur" data-i18n="nav_features">Fitur</a>
       <a href="#ringan" data-i18n="nav_light">Ringan</a>
       <a href="#faq" data-i18n="nav_faq">Tanya jawab</a>
+      <a href="#support" data-i18n="nav_sup">Support</a>
     </nav>
     <div class="lang" role="group" aria-label="Bahasa / Language">
       <button type="button" data-lang="id" aria-pressed="true">ID</button>
@@ -428,14 +448,16 @@ body.arcade .tab[aria-pressed="true"] { background: var(--yellow); }
     </div>
   </section>
 
-  <section class="support" id="dukung">
+  <section class="support" id="support">
     <div class="wrap">
       <div class="support-card glass">
         <div>
           <h2 data-i18n="sup_title">Gratis, dan bakal tetap gratis.</h2>
-          <p class="lede" data-i18n="sup_lede">Ongol dibikin di Indonesia. Kalau Ongol bikin harimu lebih enak, traktir kopi biar update berikutnya cepat jadi.</p>
+          <p class="lede" data-i18n="sup_lede">Ongol dibikin di Indonesia. Semua fitur bisa dipakai tanpa bayar. Kalau Ongol bikin harimu lebih enak, kasih Support biar update berikutnya cepat jadi.</p>
+          <p class="sup-note" data-i18n="sup_note">Support sifatnya sukarela dan gak membuka fitur apa pun.</p>
         </div>
         <div class="tips">
+          <button type="button" class="tip qris" id="qrisBtn" data-tip="qris"><span>QRIS<small data-i18n="t0">Scan pakai m-banking atau e-wallet apa aja</small></span><span class="go" aria-hidden="true">♥</span></button>
           <a class="tip" data-tip="saweria"><span>Saweria<small data-i18n="t1">QRIS, GoPay, OVO, DANA</small></span><span class="go" aria-hidden="true">♥</span></a>
           <a class="tip" data-tip="trakteer"><span>Trakteer<small data-i18n="t2">Traktir cendol</small></span><span class="go" aria-hidden="true">♥</span></a>
           <a class="tip" data-tip="kofi"><span>Ko-fi<small data-i18n="t3">PayPal dan kartu kredit</small></span><span class="go" aria-hidden="true">♥</span></a>
@@ -444,11 +466,41 @@ body.arcade .tab[aria-pressed="true"] { background: var(--yellow); }
     </div>
   </section>
 
+  <section class="feedback" id="feedback">
+    <div class="wrap">
+      <div class="center">
+        <h2 data-i18n="fb_title">Ada masukan? Ongol dengerin.</h2>
+        <p class="lede" data-i18n="fb_lede">Nemu bug, punya ide fitur, atau sekadar mau cerita. Semua masukan dibaca.</p>
+      </div>
+      <div class="fb-grid">
+        <a class="fb glass" data-fb="bug" target="_blank" rel="noopener">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="7" y="7" width="10" height="13" rx="5"/><path d="M9 7a3 3 0 0 1 6 0M3 12h4M17 12h4M4 7l3 2M20 7l-3 2M4 18l3-2M20 18l-3-2M12 11v9"/></svg>
+          <b data-i18n="fb1_t">Lapor bug</b>
+          <p data-i18n="fb1_p">Ceritain apa yang terjadi, versi Windows, dan kalau bisa sertakan screenshot.</p>
+          <span class="more" data-i18n="fb_open">Buka formulir →</span>
+        </a>
+        <a class="fb glass" data-fb="idea" target="_blank" rel="noopener">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 18h6M10 21h4M12 3a6 6 0 0 0-3.5 10.9c.6.5 1 1.2 1 2.1h5c0-.9.4-1.6 1-2.1A6 6 0 0 0 12 3z"/></svg>
+          <b data-i18n="fb2_t">Usul fitur</b>
+          <p data-i18n="fb2_p">Pengen Ongol bisa apa lagi? Tulis idenya, nanti bisa di-vote orang lain juga.</p>
+          <span class="more" data-i18n="fb_open">Buka formulir →</span>
+        </a>
+        <a class="fb glass" data-fb="list" target="_blank" rel="noopener">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 5h16v11H8l-4 4z"/><path d="M8 9h8M8 12h5"/></svg>
+          <b data-i18n="fb3_t">Lihat masukan lain</b>
+          <p data-i18n="fb3_p">Cek dulu, siapa tahu bug atau ide lo udah ada yang nulis. Tinggal kasih 👍.</p>
+          <span class="more" data-i18n="fb_see">Lihat semua →</span>
+        </a>
+      </div>
+      <p class="fb-tip" data-i18n="fb_tip">Masukan ditulis di GitHub Issues. Perlu akun GitHub gratis.</p>
+    </div>
+  </section>
+
   <section class="faq" id="faq">
     <div class="wrap">
       <div class="center"><h2 data-i18n="faq_title">Sering ditanya.</h2></div>
       <div class="faq-list">
-        <details><summary data-i18n="q1">Beneran gratis?</summary><p data-i18n="a1">Iya. Semua fitur bisa dipakai tanpa bayar dan tanpa akun. Donasi sifatnya sukarela.</p></details>
+        <details><summary data-i18n="q1">Beneran gratis?</summary><p data-i18n="a1">Iya. Semua fitur bisa dipakai tanpa bayar dan tanpa akun. Support sifatnya sukarela.</p></details>
         <details><summary data-i18n="q2">Aman gak? Kok Windows ngasih peringatan?</summary><p data-i18n="a2">Windows memperingatkan semua aplikasi baru yang belum punya sertifikat tanda tangan berbayar. Cocokkan kode SHA-256 di bagian unduh dengan file yang kamu dapat. Ongol tidak mengumpulkan data pribadi.</p></details>
         <details><summary data-i18n="q3">Pemutar musik apa aja yang kebaca?</summary><p data-i18n="a3">Semua yang muncul di kontrol media Windows: Spotify, YouTube atau YouTube Music di browser, Apple Music, VLC, dan lainnya.</p></details>
         <details><summary data-i18n="q4">Kenapa ada lagu yang liriknya gak muncul?</summary><p data-i18n="a4">Lirik diambil dari LRCLIB, database lirik gratis. Kalau lagunya belum ada di sana, Ongol bilang liriknya belum ketemu.</p></details>
@@ -472,18 +524,29 @@ body.arcade .tab[aria-pressed="true"] { background: var(--yellow); }
 <footer>
   <div class="wrap">
     <p data-i18n="foot">Privasi: Ongol tidak mengumpulkan data pribadi dan tidak memakai analitik. Pengaturan disimpan di laptopmu. Ongol cuma menghubungi Open-Meteo (cuaca), OpenStreetMap (nama lokasi), ipapi.co (perkiraan lokasi kalau Lokasi Windows mati), LRCLIB (lirik), dan layanan suara Microsoft untuk suara Ongol. Kalau kamu memasukkan API key Claude, pertanyaan bebas dikirim ke Anthropic.</p>
-    <nav aria-label="Footer"><a href="#unduh" data-i18n="nav_get">Unduh gratis</a><a href="#faq" data-i18n="nav_faq">Tanya jawab</a><a href="#dukung" data-i18n="nav_sup">Dukung</a></nav>
+    <nav aria-label="Footer"><a href="#unduh" data-i18n="nav_get">Unduh gratis</a><a href="#faq" data-i18n="nav_faq">Tanya jawab</a><a href="#support" data-i18n="nav_sup">Support</a><a href="#feedback" data-i18n="nav_fb">Feedback</a></nav>
   </div>
 </footer>
 <audio id="hai" preload="none"></audio>
+<div class="qr-modal" id="qrModal" hidden role="dialog" aria-modal="true" aria-labelledby="qrTitle">
+  <div class="qr-box">
+    <b id="qrTitle" data-i18n="qr_t">Support lewat QRIS</b>
+    <img id="qrImg" alt="Kode QRIS Ongol" width="320" height="320">
+    <p data-i18n="qr_p">Buka m-banking atau e-wallet, pilih Scan/Bayar, arahkan ke kode ini. Nominal bebas.</p>
+    <button type="button" class="btn btn-ghost btn-sm" id="qrClose" style="justify-self:center" data-i18n="qr_close">Tutup</button>
+  </div>
+</div>
 
 <script>
 /* ===== edit when publishing ===== */
 const DOWNLOAD_URL = "OngolSetup.exe";
-const TIPS = { saweria: "", trakteer: "", kofi: "" };
+const TIPS = { saweria: "", trakteer: "", kofi: "" };   // isi link, kosong = tombol abu-abu
+const QRIS_IMG = "";                                     // contoh: "img/qris.png", kosong = tombol abu-abu
+const REPO = "https://github.com/OngolApp/ongolapp.github.io";
+const FEEDBACK = { bug: REPO + "/issues/new?template=bug.yml", idea: REPO + "/issues/new?template=ide.yml", list: REPO + "/issues" };
 /* ================================ */
 const EN = {
-  nav_try: "Try it", nav_features: "Features", nav_light: "Light", nav_faq: "FAQ", nav_get: "Download free", nav_sup: "Support",
+  nav_try: "Try it", nav_features: "Features", nav_light: "Light", nav_faq: "FAQ", nav_get: "Download free", nav_sup: "Support", nav_fb: "Feedback",
   b_free: "Free", b_ver: "Version", b_lang: "Indonesian & English",
   hero_title: "A slime lives at the top of your screen.",
   hero_lede: "Ongol turns the top of your Windows screen into an interactive notch. Your song and its lyrics, the weather, your schedule, a focus timer, screenshots, even a voice assistant, right when you need them.",
@@ -508,10 +571,17 @@ const EN = {
   s2_t: "Get past the Windows warning", s2_p: "If you see \"Windows protected your PC\", click More info, then Run anyway. It shows up because Ongol doesn't have a paid signing certificate yet.",
   s3_t: "Click Install", s3_p: "Done. Ongol appears at the top of your screen.", dl_btn: "Download OngolSetup.exe",
   r1: "Windows 10 or 11, 64-bit.", r2: "The voice assistant and screen recording need the internet once to download their add-ons.", r3: "Mac isn't supported yet.", hash: "SHA-256 to check the file is genuine:",
-  sup_title: "Free, and staying free.", sup_lede: "Ongol is made in Indonesia. If it makes your day nicer, buy a coffee so the next update lands sooner.",
-  t1: "QRIS and Indonesian e-wallets", t2: "Indonesian tipping site", t3: "PayPal and credit cards",
+  sup_title: "Free, and staying free.", sup_lede: "Ongol is made in Indonesia. Every feature is free. If Ongol makes your day nicer, send some Support so the next update lands sooner.",
+  sup_note: "Support is voluntary and doesn't unlock anything.",
+  t0: "Scan with any Indonesian banking or e-wallet app", t1: "QRIS and Indonesian e-wallets", t2: "Indonesian tipping site", t3: "PayPal and credit cards",
+  qr_t: "Support via QRIS", qr_p: "Open your banking or e-wallet app, choose Scan/Pay and point it at this code. Any amount.", qr_close: "Close",
+  fb_title: "Got feedback? Ongol's listening.", fb_lede: "Found a bug, have a feature idea, or just want to say something. Every note gets read.",
+  fb1_t: "Report a bug", fb1_p: "Tell us what happened, your Windows version, and a screenshot if you can.",
+  fb2_t: "Suggest a feature", fb2_p: "What else should Ongol do? Write it up and others can vote on it too.",
+  fb3_t: "See other feedback", fb3_p: "Check first, someone may have posted your bug or idea already. Just add a 👍.",
+  fb_open: "Open the form →", fb_see: "See all →", fb_tip: "Feedback lives in GitHub Issues. A free GitHub account is needed.",
   faq_title: "Frequently asked.",
-  q1: "Is it really free?", a1: "Yes. Every feature works without paying and without an account. Donations are optional.",
+  q1: "Is it really free?", a1: "Yes. Every feature works without paying and without an account. Support is optional.",
   q2: "Is it safe? Why does Windows warn me?", a2: "Windows warns about any new app without a paid signing certificate. Compare the SHA-256 code in the download section with your file. Ongol doesn't collect personal data.",
   q3: "Which music players work?", a3: "Anything in the Windows media controls: Spotify, YouTube or YouTube Music in your browser, Apple Music, VLC and more.",
   q4: "Why don't some songs have lyrics?", a4: "Lyrics come from LRCLIB, a free lyrics database. If a song isn't there yet, Ongol says it couldn't find them.",
@@ -679,10 +749,20 @@ document.querySelectorAll(".lang button").forEach(b => b.addEventListener("click
 document.querySelectorAll("#themeSeg button").forEach(b => b.addEventListener("click", () => applyTheme(b.dataset.theme)));
 
 document.getElementById("dlBtn").href = DOWNLOAD_URL;
-document.querySelectorAll("[data-tip]").forEach(a => {
+document.querySelectorAll("a[data-tip]").forEach(a => {
   const u = TIPS[a.dataset.tip];
   if (u) { a.href = u; a.target = "_blank"; a.rel = "noopener"; } else { a.classList.add("soon"); a.setAttribute("aria-disabled", "true"); }
 });
+const qrisBtn = document.getElementById("qrisBtn"), qrModal = document.getElementById("qrModal");
+if (QRIS_IMG) {
+  document.getElementById("qrImg").src = QRIS_IMG;
+  qrisBtn.addEventListener("click", () => { qrModal.hidden = false; document.getElementById("qrClose").focus(); });
+} else { qrisBtn.classList.add("soon"); qrisBtn.setAttribute("aria-disabled", "true"); }
+const closeQr = () => { qrModal.hidden = true; qrisBtn.focus(); };
+document.getElementById("qrClose").addEventListener("click", closeQr);
+qrModal.addEventListener("click", e => { if (e.target === qrModal) closeQr(); });
+addEventListener("keydown", e => { if (e.key === "Escape" && !qrModal.hidden) closeQr(); });
+document.querySelectorAll("[data-fb]").forEach(a => { a.href = FEEDBACK[a.dataset.fb]; });
 S.theme = load("theme") || "classic";
 document.body.classList.toggle("arcade", S.theme === "arcade");
 document.querySelectorAll("#themeSeg button").forEach(b => b.setAttribute("aria-pressed", String(b.dataset.theme === S.theme)));
