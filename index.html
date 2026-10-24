@@ -216,7 +216,7 @@ a.fb:hover { background: var(--glass-hi); transform: translateY(-2px); }
 .fb.soon { opacity: .55; }
 .fb-tip { margin-top: 18px; font-size: 14px; color: var(--dim); text-align: center; }
 .qr-modal { position: fixed; inset: 0; z-index: 100; display: grid; place-items: center; padding: 16px; background: rgba(3, 5, 15, .75); backdrop-filter: blur(6px); }
-.qr-modal[hidden] { display: none; }
+.qr-modal[hidden], .tip[hidden] { display: none; }
 .qr-box { width: min(380px, 100%); padding: 24px; border-radius: 24px; background: var(--night-2); border: 1px solid var(--line); text-align: center; display: grid; gap: 14px; }
 .qr-box img { width: 100%; border-radius: 14px; background: #fff; padding: 10px; }
 .qr-box p { color: var(--soft); font-size: 14px; }
@@ -458,7 +458,7 @@ body.arcade .tab[aria-pressed="true"] { background: var(--yellow); }
         </div>
         <div class="tips">
           <button type="button" class="tip qris" id="qrisBtn" data-tip="qris"><span>QRIS<small data-i18n="t0">Scan pakai m-banking atau e-wallet apa aja</small></span><span class="go" aria-hidden="true">♥</span></button>
-          <a class="tip" data-tip="saweria"><span>Saweria<small data-i18n="t1">QRIS, GoPay, OVO, DANA</small></span><span class="go" aria-hidden="true">♥</span></a>
+          <a class="tip" data-tip="saweria"><span>Saweria<small data-i18n="t1">Bayar pakai QRIS, GoPay, OVO, atau DANA</small></span><span class="go" aria-hidden="true">♥</span></a>
           <a class="tip" data-tip="trakteer"><span>Trakteer<small data-i18n="t2">Traktir cendol</small></span><span class="go" aria-hidden="true">♥</span></a>
           <a class="tip" data-tip="kofi"><span>Ko-fi<small data-i18n="t3">PayPal dan kartu kredit</small></span><span class="go" aria-hidden="true">♥</span></a>
         </div>
@@ -540,8 +540,8 @@ body.arcade .tab[aria-pressed="true"] { background: var(--yellow); }
 <script>
 /* ===== edit when publishing ===== */
 const DOWNLOAD_URL = "OngolSetup.exe";
-const TIPS = { saweria: "", trakteer: "", kofi: "" };   // isi link, kosong = tombol abu-abu
-const QRIS_IMG = "";                                     // contoh: "img/qris.png", kosong = tombol abu-abu
+const TIPS = { saweria: "https://saweria.co/slimeworks", trakteer: "", kofi: "" };   // isi link, kosong = tombol disembunyikan
+const QRIS_IMG = "";                                     // contoh: "img/qris.png", kosong = tombol disembunyikan
 const REPO = "https://github.com/OngolApp/ongolapp.github.io";
 const FEEDBACK = { bug: REPO + "/issues/new?template=bug.yml", idea: REPO + "/issues/new?template=ide.yml", list: REPO + "/issues" };
 /* ================================ */
@@ -573,7 +573,7 @@ const EN = {
   r1: "Windows 10 or 11, 64-bit.", r2: "The voice assistant and screen recording need the internet once to download their add-ons.", r3: "Mac isn't supported yet.", hash: "SHA-256 to check the file is genuine:",
   sup_title: "Free, and staying free.", sup_lede: "Ongol is made in Indonesia. Every feature is free. If Ongol makes your day nicer, send some Support so the next update lands sooner.",
   sup_note: "Support is voluntary and doesn't unlock anything.",
-  t0: "Scan with any Indonesian banking or e-wallet app", t1: "QRIS and Indonesian e-wallets", t2: "Indonesian tipping site", t3: "PayPal and credit cards",
+  t0: "Scan with any Indonesian banking or e-wallet app", t1: "Pay with QRIS, GoPay, OVO or DANA", t2: "Indonesian tipping site", t3: "PayPal and credit cards",
   qr_t: "Support via QRIS", qr_p: "Open your banking or e-wallet app, choose Scan/Pay and point it at this code. Any amount.", qr_close: "Close",
   fb_title: "Got feedback? Ongol's listening.", fb_lede: "Found a bug, have a feature idea, or just want to say something. Every note gets read.",
   fb1_t: "Report a bug", fb1_p: "Tell us what happened, your Windows version, and a screenshot if you can.",
@@ -751,13 +751,13 @@ document.querySelectorAll("#themeSeg button").forEach(b => b.addEventListener("c
 document.getElementById("dlBtn").href = DOWNLOAD_URL;
 document.querySelectorAll("a[data-tip]").forEach(a => {
   const u = TIPS[a.dataset.tip];
-  if (u) { a.href = u; a.target = "_blank"; a.rel = "noopener"; } else { a.classList.add("soon"); a.setAttribute("aria-disabled", "true"); }
+  if (u) { a.href = u; a.target = "_blank"; a.rel = "noopener"; } else { a.hidden = true; }
 });
 const qrisBtn = document.getElementById("qrisBtn"), qrModal = document.getElementById("qrModal");
 if (QRIS_IMG) {
   document.getElementById("qrImg").src = QRIS_IMG;
   qrisBtn.addEventListener("click", () => { qrModal.hidden = false; document.getElementById("qrClose").focus(); });
-} else { qrisBtn.classList.add("soon"); qrisBtn.setAttribute("aria-disabled", "true"); }
+} else { qrisBtn.hidden = true; }
 const closeQr = () => { qrModal.hidden = true; qrisBtn.focus(); };
 document.getElementById("qrClose").addEventListener("click", closeQr);
 qrModal.addEventListener("click", e => { if (e.target === qrModal) closeQr(); });
